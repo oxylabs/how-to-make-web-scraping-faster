@@ -30,8 +30,6 @@ def refresh_links():
         for link in links:
             f.write(link + '\n')
 
- 
-
 refresh_links()
 ```
 
