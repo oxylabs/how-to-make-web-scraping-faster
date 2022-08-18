@@ -82,12 +82,7 @@ def main():
 
     print(f"{(time.time() - start_time):.2f} seconds")
 
-   
-
-    
-
 main()
-
 
 ```
 
@@ -126,7 +121,7 @@ with ThreadPoolExecutor(max_workers=100) as p:
     results = p.map(get_response, links)
 ```
 
-```python
+```bash
 python3 -m pip install aiohttp
 ```
 
