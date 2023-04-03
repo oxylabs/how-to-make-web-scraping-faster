@@ -1,4 +1,12 @@
 # How to Make Web Scraping Faster – Python Tutorial
+- [How do you speed up web scraping in Python?](#how-do-you-speed-up-web-scraping-in-python)
+- [Web scraping without optimization](#web-scraping-without-optimization)
+- [Preparation](#preparation)
+- [Writing unoptimized web scraper](#writing-unoptimized-web-scraper)
+- [Web scraping using multiprocessing](#web-scraping-using-multiprocessing)
+- [Web scraping using multithreading](#web-scraping-using-multithreading)
+- [Asyncio for asynchronous programming](#asyncio-for-asynchronous-programming)
+
 
 ## How do you speed up web scraping in Python?
 
@@ -14,7 +22,7 @@ However, let’s first take a look at an unoptimized code to make sure the diffe
 
 ## Web scraping without optimization
 
-We will be scraping 1000 books from books.toscrape.com. This website is a dummy book store that is perfect for learning. 
+We'll be scraping 1000 books from books.toscrape.com. This website is a dummy book store that's perfect for learning. 
 
 ## Preparation
 
@@ -52,7 +60,7 @@ The `fetch_links` function will retrieve all the links, and `refresh_links()` wi
 
 ## Writing unoptimized web scraper
 
-We will focus on optimizing 1,000 pages of web scraping in Python.
+We'll focus on optimizing 1,000 pages of web scraping in Python.
 
 First, install the requests library using `pip`:
 
@@ -60,7 +68,7 @@ First, install the requests library using `pip`:
 pip install requests
 ```
 
-To keep things simple, we will use regular expressions to extract the title element of the page. Note the `get_links` functions that loads the urls we saved in the previous step.
+To keep things simple, we'll use regular expressions to extract the title element of the page. Note the `get_links` functions that loads the urls we saved in the previous step.
 
 ```python
 import csv
@@ -102,7 +110,7 @@ The code without optimization code took **288.62 seconds**.
 
 [<u>Multiprocessing</u>](https://www.techtarget.com/searchdatacenter/definition/multiprocessing), as the name suggests, is utilizing more than one processor. Most modern computers have more than one CPU core, if not multiple CPUs. Using the multiprocessing module, included with the Python standard library, we can write code that uses all these cores. 
 
-For example, if we have an 8-core CPU, we can essentially write code that can split the task into eight different processes where each process runs in a separate CPU core. Note that this approach is more suitable when the bottleneck is CPU or when the code is CPU-Bound. We will still see some improvements in our case, though. 
+For example, if we have an 8-core CPU, we can essentially write code that can split the task into eight different processes where each process runs in a separate CPU core. Note that this approach is more suitable when the bottleneck is CPU or when the code is CPU-Bound. We'll still see some improvements in our case, though. 
 
 The first step is to import `Pool` and `cpu_count` from the multiprocessing module
 
@@ -135,7 +143,7 @@ if __name__ == '__main__':
 	main()
 ```
 
-The most critical line of the code is where we create a `Pool`. Note that we are using `cpu_count()` function to get the count of CPU cores dynamically. This ensures that this code runs on every machine without any change. 
+The most critical line of the code is where we create a `Pool`. Note that we're using `cpu_count()` function to get the count of CPU cores dynamically. This ensures that this code runs on every machine without any change. 
 
 In this example, the execution time was **around 49 seconds**. It's a better result compared to an unoptimized code, where the same process took around 126 seconds. Still, as expected, it's a slight improvement. As we mentioned, multiprocessing is more suitable when the code is CPU-Bound. Our code is I/O bound; thus, we can improve the performance of this code more with other methods. 
 
@@ -168,7 +176,7 @@ This script execution **was completed in 7.02 seconds**. For reference, the unop
 
 [<u>Asynchronous coding</u>](https://hackernoon.com/a-simple-introduction-to-pythons-asyncio-595d9c9ecf8c) using the `asyncio` module is essentially threading where the code controls the context switching. It also makes coding more effortless and less error-prone. Specifically, for web scraping projects, this is the most suitable approach.
 
-This approach requires quite a lot of changes. First, the requests library will not work. Instead, we will use the `aiohttp` library for web scraping in Python. This requires a separate installation:
+This approach requires quite a lot of changes. First, the requests library will not work. Instead, we'll use the `aiohttp` library for web scraping in Python. This requires a separate installation:
 
 ```bash
 python3 -m pip install aiohttp
@@ -181,7 +189,7 @@ import aiohttp
 import asyncio
 ```
 
-The `get_response()` function now needs to change to a coroutine. Also, we will be using the same session for every execution. Optionally, you can send the user agent if needed.
+The `get_response()` function now needs to change to a coroutine. Also, we'll be using the same session for every execution. Optionally, you can send the user agent if needed.
 
 Note the use of `async` and `await` keywords.
 
@@ -195,7 +203,7 @@ async def get_response(session, url):
 
 The most significant changes are in the `main()` function.
 
-First, it needs to change to a coroutine. Next, we will use `aiohttp.ClientSession` to create the session object. Most importantly, we will need to create tasks for all the links. Finally, all the tasks will be sent to an event loop using the `asyncio.gather` method.
+First, it needs to change to a coroutine. Next, we'll use `aiohttp.ClientSession` to create the session object. Most importantly, we'll need to create tasks for all the links. Finally, all the tasks will be sent to an event loop using the `asyncio.gather` method.
 
 ```python
 async def main():
